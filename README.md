@@ -44,7 +44,7 @@ make
 To run the `fibonacci_demo_hpx` program:
 
 ```bash
-./fibonacci_demo_hpx
+./hello_component_hpx
 ```
 
 It will output the number `42` returned by the component.
