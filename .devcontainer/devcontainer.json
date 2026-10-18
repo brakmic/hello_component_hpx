@@ -1,0 +1,22 @@
+{
+  "name": "HPX Hello Component",
+  "image": "brakmic/hpx-builder:1.11.0",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cmake-tools",
+        "ms-vscode.cpptools"
+      ],
+      "settings": {
+        "cmake.generator": "Ninja",
+        "cmake.configureSettings": {
+          "CMAKE_PREFIX_PATH": "/usr/local/hpx"
+        }
+      }
+    }
+  },
+  "postCreateCommand": "cmake -S /workspace -B /workspace/build -DCMAKE_PREFIX_PATH=/usr/local/hpx"
+}
