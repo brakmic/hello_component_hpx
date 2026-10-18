@@ -23,6 +23,8 @@ The project is structured as follows:
 ```text
 .
 ├── CMakeLists.txt           # Build configuration
+├── .devcontainer            # VS Code development container
+│   └── devcontainer.json
 ├── include                  # Header files
 │   └── hello_component.hpp  # HPX component header
 ├── src                      # Source files
@@ -57,6 +59,21 @@ docker run --rm -v "$PWD:/src:ro" brakmic/hpx-builder:1.11.0 bash -lc '
   /tmp/app/build/hello_component_hpx
 '
 ```
+
+### Development Container
+
+The repository includes a VS Code devcontainer that uses
+`brakmic/hpx-builder:1.11.0`. Open the folder in VS Code and choose
+**Reopen in Container**, or run:
+
+```bash
+devcontainer up --workspace-folder .
+```
+
+The container configures CMake with Ninja and `CMAKE_PREFIX_PATH=/usr/local/hpx`
+and builds into `/workspace/build`. The container runs as root, matching the
+builder image. On Linux hosts the build directory is owned by root; remove it
+with `sudo` if that becomes inconvenient.
 
 ### Running the Program
 
