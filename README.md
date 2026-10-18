@@ -1,5 +1,7 @@
 # HPX HelloWorld Component
 
+![CI](https://github.com/brakmic/hello_component_hpx/actions/workflows/ci.yml/badge.svg)
+
 This project demonstrates how to create a basic **HPX component** that returns the number 42 when called.
 The project is structured as follows:
 
@@ -10,9 +12,11 @@ The project is structured as follows:
 ## Getting Started
 
 ### Prerequisites
-- Install HPX following the [HPX installation guide](https://hpx-docs.stellar-group.org/latest/html/quickstart.html#).
-- Install [Boost](https://www.boost.org/).
-- Make sure you have CMake 3.19+ and a C++ compiler that supports C++23 (or change the CMake settings).
+
+- Docker.
+- The demo builds inside `brakmic/hpx-builder:1.11.0`, which provides HPX
+  1.11.0, Boost, GCC 13, and CMake 3.28. A local HPX installation also works
+  with CMake 3.19+ and a C++23 compiler.
 
 ### Project Structure
 
@@ -30,24 +34,41 @@ The project is structured as follows:
 
 ### Building the Project
 
-To build the project:
+Build inside the builder image:
 
 ```bash
-mkdir build
-cd build
-cmake ..
-make
+docker run --rm -it -v "$PWD:/src" brakmic/hpx-builder:1.11.0 /bin/bash
+```
+
+Inside the container:
+
+```bash
+cmake -S /src -B /src/build -DCMAKE_PREFIX_PATH=/usr/local/hpx
+cmake --build /src/build --parallel 2
+```
+
+A one-shot build and run:
+
+```bash
+docker run --rm -v "$PWD:/src:ro" brakmic/hpx-builder:1.11.0 bash -lc '
+  cp -a /src /tmp/app
+  cmake -S /tmp/app -B /tmp/app/build -DCMAKE_PREFIX_PATH=/usr/local/hpx
+  cmake --build /tmp/app/build --parallel 2
+  /tmp/app/build/hello_component_hpx
+'
 ```
 
 ### Running the Program
 
-To run the `fibonacci_demo_hpx` program:
+To run the program after an in-container build:
 
 ```bash
-./hello_component_hpx
+/src/build/hello_component_hpx
 ```
 
-It will output the number `42` returned by the component.
+It prints the number `42` returned by the component. The demo uses C++23
+against HPX 1.11.0, which itself is built with C++17.
 
 ### LICENSE
+
 [MIT](./LICENSE)
